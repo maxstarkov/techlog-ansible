@@ -1,0 +1,10 @@
+techlog_config_path: "C:\\Program Files\\1cv8\\conf\\logcfg.xml"
+techlog:
+  - name: common
+    location: "C:\\tech\\logs\\all"
+    history: 3
+    events:
+      - properties:
+        - {op: eq, name: Name, value: EXCP}
+    properties:
+      - name: all

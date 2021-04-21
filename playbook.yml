@@ -1,0 +1,6 @@
+---
+- name: Techlog provision
+  hosts: [onec]
+  
+  roles:
+    - role: techlog
