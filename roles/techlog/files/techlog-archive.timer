@@ -1,0 +1,9 @@
+[Unit]
+Description=Timer for techlog-archive
+
+[Timer]
+OnCalendar=00/1:10:00
+Unit=techlog-archive.service
+
+[Install]
+WantedBy=multi-user.target

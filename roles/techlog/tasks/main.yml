@@ -1,14 +1,6 @@
 ---
-- name: Copy logcfg.xml
-  win_template:
-    src: logcfg.xml.j2
-    dest: "{{ techlog_config_path }}"
-    backup: yes
+- include: windows.yml
   when: ansible_facts['os_family'] == 'Windows'
 
-- name: Copy logcfg.xml
-  template:
-    src: logcfg.xml.j2
-    dest: "{{ techlog_config_path }}"
-    backup: yes
+- include: linux.yml
   when: ansible_facts['os_family'] != 'Windows'

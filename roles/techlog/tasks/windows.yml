@@ -1,0 +1,36 @@
+---
+- name: Windows - Copy logcfg.xml
+  win_template:
+    src: logcfg.xml.windows.j2
+    dest: "{{ techlog_config_path }}"
+    backup: yes
+
+- name: Windows - Create techlog-archive dir
+  win_file:
+    path: "{{ techlog_archive_script_path | win_dirname }}"
+    state: directory
+  tags: ['never', 'archive']
+
+- name: Windows - Copy techlog-archive script
+  win_template:
+    src: techlog-archive.ps1.j2
+    dest: "{{ techlog_archive_script_path }}"
+    backup: yes
+  tags: ['never', 'archive']
+
+- name: Windows - Create task to run techlog_archive
+  win_scheduled_task:
+    name: techlog_archive
+    description: The task performs archiving of techlog files
+    actions:
+      - path: powershell.exe
+        arguments: -ExecutionPolicy Bypass -File {{ techlog_archive_script_path }}
+    triggers:
+      - type: daily
+        start_boundary: '2021-01-01T00:10:00'
+        repetition:
+          interval: PT1H
+    username: SYSTEM
+    state: present
+    enabled: yes
+  tags: ['never', 'archive']

@@ -1,7 +1,7 @@
-techlog_config_path: "C:\\Program Files\\1cv8\\conf\\logcfg.xml"
+techlog_config_path: '{{ (ansible_facts["os_family"] == "Windows") | ternary("C:\Program Files\1cv8\conf\logcfg.xml", "/opt/1cv8/conf/logcfg.xml") }}' 
 techlog:
   - name: common
-    location: "C:\\tech\\logs\\all"
+    location: '{{ (ansible_facts["os_family"] == "Windows") | ternary("C:\tech\logs\all", "/var/log/1c/all") }}'
     history: 3
     events:
       - properties:

@@ -1,0 +1,8 @@
+[Unit]
+Description=techlog-archive
+
+[Service]
+User=usr1cv8
+Group=grp1cv8
+Type=simple
+ExecStart={{ techlog_archive_script_path | dirname }}/techlog-archive.sh

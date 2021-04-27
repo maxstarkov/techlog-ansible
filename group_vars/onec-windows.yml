@@ -1,4 +1,6 @@
-techlog_config_path: "C:\\Program Files\\1cv8\\conf\\logcfg.xml"
+techlog_config_path: C:\Program Files\1cv8\conf\logcfg.xml
+techlog_archive_script_path: C:\techlog_archive\techlog-archive.ps1
+techlog_archive_dir: C:\tech\logs\all
 techlog:
   - name: common
     location: "C:\\tech\\logs\\all"

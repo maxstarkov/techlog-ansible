@@ -1,0 +1,53 @@
+techlog_config_path: /opt/1cv8/x86_64/8.3.18.1289/conf/logcfg.xml
+techlog_archive_script_path: /opt/techlog_archive/techlog-archive.sh
+techlog_archive_dir: /var/log/1c/all
+techlog:
+  - name: common
+    location: "/var/log/1c/all"
+    history: 3
+    events:
+      - properties:
+        - {op: eq, name: Name, value: ADMIN}
+      - properties:
+        - {op: eq, name: Name, value: CLSTR}
+      - properties:
+        - {op: eq, name: Name, value: ATTN}
+      - properties:
+        - {op: eq, name: Name, value: PROC}
+      - properties:
+        - {op: eq, name: Name, value: CONN}
+      - properties:
+        - {op: eq, name: Name, value: EXCP}
+      - properties:
+        - {op: eq, name: Name, value: QERR}
+    properties:
+      - name: all
+  - name: tlock
+    location: "/var/log/1c/all"
+    history: 3
+    events:
+      - properties:
+        - {op: eq, name: Name, value: TLOCK}
+        - {op: ne, name: WaitConnections, value: ""}
+      - properties:
+        - {op: eq, name: Name, value: TTIMEOUT}
+      - properties:
+        - {op: eq, name: Name, value: TDEADLOCK}
+    properties:
+      - name: all
+  - name: longdurationinfo
+    location: "/var/log/1c/all"
+    history: 3
+    events:
+      - properties:
+        - {op: ne, name: Name, value: ""}
+        - {op: ne, name: Name, value: PROC}
+        - {op: ne, name: Name, value: CONN}
+        - {op: ne, name: Name, value: TLOCK}
+        - {op: gt, name: Duration, value: 10000}
+    properties:
+      - name: all
+      - name: sdbl
+        events:
+          - {op: eq, name: Name, value: SDBL}
+          - {op: ne, name: Func, value: insertRecords}

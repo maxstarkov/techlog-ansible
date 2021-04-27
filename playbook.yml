@@ -1,6 +1,13 @@
 ---
-- name: Techlog provision
-  hosts: [onec]
+- name: Techlog provision (windows)
+  hosts: onec-windows
+  
+  roles:
+    - role: techlog
+
+- name: Techlog provision (linux)
+  hosts: onec-linux
+  become: yes
   
   roles:
     - role: techlog

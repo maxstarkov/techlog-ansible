@@ -1,0 +1,51 @@
+---
+- name: Linux - Copy logcfg.xml
+  template:
+    src: logcfg.xml.linux.j2
+    dest: "{{ techlog_config_path }}"
+    backup: yes
+    owner: usr1cv8
+    group: grp1cv8
+
+- name: Linux - Install zip package
+  package:
+    name: zip
+    state: present
+  tags: ['never', 'archive']
+
+- name: Linux - Create techlog-archive dir
+  file:
+    path: "{{ techlog_archive_script_path | dirname }}"
+    state: directory
+    owner: usr1cv8
+    group: grp1cv8
+  tags: ['never', 'archive']
+
+- name: Linux - Copy techlog-archive script
+  template:
+    src: techlog-archive.sh.j2
+    dest: "{{ techlog_archive_script_path }}"
+    owner: usr1cv8
+    group: grp1cv8
+    mode: u+x
+  tags: ['never', 'archive']
+
+- name: Linux - Create techlog-archive service
+  template:
+    src: techlog-archive.service.j2
+    dest: /etc/systemd/system/techlog-archive.service
+  tags: ['never', 'archive']
+
+- name: Linux - Create techlog-archive timer
+  copy:
+    src: techlog-archive.timer
+    dest: /etc/systemd/system/techlog-archive.timer
+  tags: ['never', 'archive']
+
+- name: Linux - Enable techlog-archive timer
+  systemd:
+    name: techlog-archive.timer
+    state: started
+    daemon_reload: yes
+    enabled: yes
+  tags: ['never', 'archive']

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns="http://v8.1c.ru/v8/tech-log">
+{% for logs in techlog %}
+  <log location="{{ logs.location }}/{{ inventory_hostname | replace("-", "") | upper }}_{{ logs.name | upper }}" history="{{ logs.history }}">
+{% for event in logs.events %}
+    <event>
+{% for property in event.properties %}
+      <{{ property.op }} property="{{ property.name }}" value="{{ property.value }}"/>
+{% endfor %}
+    </event>
+{% endfor %}
+{% for property in logs.properties %}
+    <property name="{{ property.name }}">
+{% if property.events is defined %}
+      <event>
+{% for event in property.events %}
+        <{{ event.op }} property="{{ event.name }}" value="{{ event.value }}"/>
+{% endfor %}
+      </event>
+{% endif %}
+    </property>
+{% endfor %}
+  </log>
+{% endfor %}
+</config>

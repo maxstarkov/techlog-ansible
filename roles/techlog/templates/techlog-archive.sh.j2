@@ -1,0 +1,11 @@
+#!/bin/bash
+
+computer_name=$(hostname | tr [:upper:] [:lower:] | tr -cd [:alnum:])
+
+if [[ $(date +"%H") == 0 ]]; then
+        archive_file_name=$(date +"%d%m%Y" -d "1 day ago");
+else
+        archive_file_name=$(date +"%d%m%Y");
+fi
+
+zip -r -u {{ techlog_archive_script_path | dirname }}/$computer_name-$archive_file_name.zip {{ techlog_archive_dir }}

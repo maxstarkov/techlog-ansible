@@ -1,0 +1,8 @@
+# Скрипт для периодического архивирования каталога технологического журнала с помощью 7-Zip
+# Файлы архива назваются по формату ИмяКомпьютера-Дата
+# Архивы создаются ежедневно. Каждый день формируется новый файл архива.
+
+$archive_file_name = if ((Get-Date).Hour -eq 0) { (Get-Date).AddDays(-1).Date.ToString('ddMMyyyy') } else { (Get-Date).Date.ToString('ddMMyyyy') }
+$computer_name = $env:COMPUTERNAME.ToLower() -replace '[\W]', ""
+
+Start-Process -FilePath '7z.exe' -ArgumentList @('u', """{{ techlog_archive_script_path | win_dirname }}\$computer_name-$archive_file_name.zip""", 'sww', '{{ techlog_archive_dir }}')
